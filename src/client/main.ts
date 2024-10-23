@@ -7,10 +7,13 @@ userMessages$.pipe(
     tap((e: FormDataEvent) => {
         e.preventDefault();
     }),
-    map((e: FormDataEvent): Message => {
+    map((e: FormDataEvent): string => {
         const messageInput: HTMLInputElement = ((e.currentTarget as HTMLFormElement).querySelector('input[name="message"]')!);
         const message = messageInput.value;
         messageInput.value = ""; /*Note: this is a side-effect!*/
+        return message;
+    }),
+    map((message: string): Message => {
         return {data: message, action: "sent", timestamp: new Date()};
     })
 ).subscribe(message => {
